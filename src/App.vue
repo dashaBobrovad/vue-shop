@@ -1,10 +1,9 @@
 <script setup>
-import MyHello from './components/MyHello.vue';
+import HomePage from './pages/Home.vue';
+// import Drawer from './components/Drawer.vue';
 </script>
 
 <template>
-  <h1 class="text-3xl font-bold underline">Hello world!</h1>
-  <MyHello />
+  <!-- <Drawer /> -->
+  <HomePage />
 </template>
-
-<style scoped></style>
