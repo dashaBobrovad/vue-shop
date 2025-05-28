@@ -27,3 +27,12 @@ npm run dev
 ```sh
 npm run build
 ```
+
+
+TODO: 
+1. add vuex and rewrite to pinia
+2. styles line on Anki
+3. restyle
+4. разнести все по константам
+5. накатить TS
+6. debounce

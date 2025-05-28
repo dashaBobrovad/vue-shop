@@ -1,6 +1,41 @@
 <script setup>
-import Card from '../components/Card.vue';
+import { onMounted, ref, watch, reactive } from 'vue';
+import CardList from '../components/CardList.vue';
 import Header from '../components/Header.vue';
+
+const items = ref([]);
+
+const filters = reactive({
+  searchQuery: '',
+  sortBy: '',
+});
+
+const fetchItems = async () => {
+  try {
+    const params = new URLSearchParams();
+
+    if (filters.sortBy) {
+      params.set('sortBy', filters.sortBy);
+    }
+
+    if (filters.searchQuery) {
+      params.set('title', `*${filters.searchQuery}*`);
+    }
+
+    const query = params.toString();
+    const url = `https://efe88dd61a59f406.mokky.dev/items${query ? `?${query}` : ''}`;
+
+    const response = await fetch(url);
+    const data = await response.json();
+
+    items.value = data;
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+onMounted(fetchItems);
+watch(filters, fetchItems);
 </script>
 
 <template>
@@ -12,14 +47,17 @@ import Header from '../components/Header.vue';
         <h1 class="text-3xl font-bold">Все кроссовки</h1>
         <div class="flex items-center gap-4">
           <select
+            v-model="filters.sortBy"
             class="rounded-md border border-gray-200 px-3 py-2 focus:border-gray-400 focus:outline-none"
           >
-            <option value="name">По названию</option>
-            <option value="price">По цене (дешевые)</option>
+            <option value="" disabled selected>Select your option</option>
+            <option value="title">По названию</option>
+            <option value="-price">По цене (дешевые)</option>
             <option value="price">По цене (дорогие)</option>
           </select>
           <div class="relative">
             <input
+              v-model="filters.searchQuery"
               type="text"
               class="rounded-md border border-gray-200 py-2 pl-10 pr-4 focus:border-gray-400 focus:outline-none"
               placeholder="Поиск..."
@@ -33,13 +71,7 @@ import Header from '../components/Header.vue';
         </div>
       </div>
 
-      <div class="grid grid-cols-4 gap-10">
-        <Card
-          title="Мужские Кроссовки Nike Blazer Mid Suede"
-          price="1000"
-          img="/sneakers/sneakers-1.jpg"
-        />
-      </div>
+      <CardList :items="items" />
     </div>
   </div>
 </template>

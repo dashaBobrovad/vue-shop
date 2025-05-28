@@ -9,15 +9,21 @@
     </div>
 
     <ul class="flex items-center gap-10">
-      <li class="flex cursor-pointer items-center gap-3">
+      <li
+        class="flex cursor-pointer items-center gap-3 text-gray-500 hover:text-black"
+      >
         <img src="/cart.svg" alt="Cart" />
         <b>1205 руб.</b>
       </li>
-      <li class="flex cursor-pointer items-center gap-3">
+      <li
+        class="flex cursor-pointer items-center gap-3 text-gray-500 hover:text-black"
+      >
         <img src="/heart.svg" alt="Favorite" />
         <span>Закладки</span>
       </li>
-      <li class="flex cursor-pointer items-center gap-3">
+      <li
+        class="flex cursor-pointer items-center gap-3 text-gray-500 hover:text-black"
+      >
         <img src="/profile.svg" alt="Favorite" />
         <span>Профиль</span>
       </li>
