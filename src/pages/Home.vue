@@ -63,15 +63,15 @@ const fetchItems = async () => {
   }
 };
 
-const addToFavorite = (obj) => {
-  const item = items.value.find((item) => item.id === obj.parentId);
+const addToFavorite = (id) => {
+  const item = items.value.find((item) => item.id === id);
 
   if (item) {
     item.isFavorite = true;
   }
 };
 
-provide('addToFavorite', addToFavorite);
+// provide('addToFavorite', addToFavorite);
 
 onMounted(async () => {
   await fetchItems();
@@ -114,7 +114,7 @@ watch(filters, fetchItems);
         </div>
       </div>
 
-      <CardList :items="items" />
+      <CardList :items="items" @add-to-favorite="addToFavorite" />
     </div>
   </div>
 </template>

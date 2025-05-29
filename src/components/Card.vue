@@ -1,7 +1,7 @@
 <script setup>
 import { inject } from 'vue';
 
-const props = defineProps({
+defineProps({
   id: Number,
   title: String,
   img: String,
@@ -10,18 +10,14 @@ const props = defineProps({
   isAdded: Boolean,
 });
 
-const addToFavorite = inject('addToFavorite');
-
-const onFavClick = () => {
-  addToFavorite({ parentId: props.id });
-};
+defineEmits(['add-to-favorite']);
 </script>
 
 <template>
   <div
     class="relative flex w-full cursor-pointer flex-col rounded-xl border border-slate-100 p-8 transition hover:-translate-y-2 hover:shadow-xl"
   >
-    <div class="absolute left-8 top-8" @click="onFavClick">
+    <div class="absolute left-8 top-8" @click="$emit('add-to-favorite')">
       <img :src="!isFavorite ? '/like-1.svg' : '/like-2.svg'" alt="Favorite" />
     </div>
     <img :src="img" class="w-full" alt="Sneaker" />
