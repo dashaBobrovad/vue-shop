@@ -11,9 +11,12 @@ defineProps({
     <Card
       v-for="item of items"
       :key="item.id"
+      :id="item.id"
       :title="item.title"
       :price="item.price"
       :img="item.imageUrl"
+      :isFavorite="item.isFavorite"
+      :isAdded="item.isAdded"
     />
   </div>
 </template>

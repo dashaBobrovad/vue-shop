@@ -1,7 +1,8 @@
 <script setup>
-// import { ref } from 'vue';
+import { inject } from 'vue';
 
-defineProps({
+const props = defineProps({
+  id: Number,
   title: String,
   img: String,
   price: Number,
@@ -9,23 +10,18 @@ defineProps({
   isAdded: Boolean,
 });
 
-// const isFavorite = ref(false);
-// const isAdded = ref(false);
+const addToFavorite = inject('addToFavorite');
 
-// const onLikeClick = () => {
-//   isFavorite.value = !isFavorite.value;
-// };
-
-// const onAddClick = () => {
-//   isAdded.value = !isAdded.value;
-// };
+const onFavClick = () => {
+  addToFavorite({ parentId: props.id });
+};
 </script>
 
 <template>
   <div
     class="relative flex w-full cursor-pointer flex-col rounded-xl border border-slate-100 p-8 transition hover:-translate-y-2 hover:shadow-xl"
   >
-    <div class="absolute left-8 top-8" @click="onLikeClick">
+    <div class="absolute left-8 top-8" @click="onFavClick">
       <img :src="!isFavorite ? '/like-1.svg' : '/like-2.svg'" alt="Favorite" />
     </div>
     <img :src="img" class="w-full" alt="Sneaker" />

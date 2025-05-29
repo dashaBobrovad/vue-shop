@@ -1,5 +1,5 @@
 <script setup>
-import { onMounted, ref, watch, reactive } from 'vue';
+import { onMounted, ref, watch, reactive, provide } from 'vue';
 import CardList from '../components/CardList.vue';
 import Header from '../components/Header.vue';
 
@@ -9,6 +9,31 @@ const filters = reactive({
   searchQuery: '',
   sortBy: '',
 });
+
+const fetchFavorites = async () => {
+  try {
+    const url = 'https://efe88dd61a59f406.mokky.dev/favorite/';
+
+    const response = await fetch(url);
+    const favoritesData = await response.json();
+
+    items.value = items.value.map((item) => {
+      const favorite = favoritesData.find(
+        (favItem) => favItem.itemId === item.id,
+      );
+
+      if (!favorite) return item;
+
+      return {
+        ...item,
+        isFavorite: true,
+        favoriteId: favorite.id,
+      };
+    });
+  } catch (error) {
+    console.error(error);
+  }
+};
 
 const fetchItems = async () => {
   try {
@@ -28,13 +53,31 @@ const fetchItems = async () => {
     const response = await fetch(url);
     const data = await response.json();
 
-    items.value = data;
+    items.value = data.map((item) => ({
+      ...item,
+      isFavorite: false,
+      isAdded: false,
+    }));
   } catch (error) {
     console.error(error);
   }
 };
 
-onMounted(fetchItems);
+const addToFavorite = (obj) => {
+  const item = items.value.find((item) => item.id === obj.parentId);
+
+  if (item) {
+    item.isFavorite = true;
+  }
+};
+
+provide('addToFavorite', addToFavorite);
+
+onMounted(async () => {
+  await fetchItems();
+  await fetchFavorites();
+});
+
 watch(filters, fetchItems);
 </script>
 
