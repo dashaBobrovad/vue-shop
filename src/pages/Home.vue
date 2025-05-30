@@ -69,6 +69,7 @@ const addToFavorite = async (id) => {
 
     const item = items.value.find((item) => item.id === id);
 
+    item.isFavorite = !item.isFavorite;
     if (!item.isFavorite) {
       const obj = { itemId: id };
 
@@ -87,8 +88,6 @@ const addToFavorite = async (id) => {
 
       item.favoriteId = undefined;
     }
-
-    item.isFavorite = !item.isFavorite;
   } catch (error) {
     console.error(error);
   }
