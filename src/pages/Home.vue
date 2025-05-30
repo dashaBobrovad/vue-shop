@@ -63,11 +63,34 @@ const fetchItems = async () => {
   }
 };
 
-const addToFavorite = (id) => {
-  const item = items.value.find((item) => item.id === id);
+const addToFavorite = async (id) => {
+  try {
+    const url = 'https://efe88dd61a59f406.mokky.dev/favorite/';
 
-  if (item) {
-    item.isFavorite = true;
+    const item = items.value.find((item) => item.id === id);
+
+    if (!item.isFavorite) {
+      const obj = { itemId: id };
+
+      const response = await fetch(url, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(obj),
+      });
+
+      const data = await response.json();
+      item.favoriteId = data.id;
+    } else {
+      await fetch(`${url}${item.favoriteId}/`, {
+        method: 'DELETE',
+      });
+
+      item.favoriteId = undefined;
+    }
+
+    item.isFavorite = !item.isFavorite;
+  } catch (error) {
+    console.error(error);
   }
 };
 
