@@ -5,6 +5,7 @@ import Header from '../components/Header.vue';
 import Drawer from '../components/Drawer.vue';
 
 const items = ref([]);
+const cart = ref([]);
 
 const isDrawerOpen = ref(false);
 
@@ -15,11 +16,11 @@ const filters = reactive({
 
 const openDrawer = () => {
   isDrawerOpen.value = true;
-}
+};
 
 const closeDrawer = () => {
   isDrawerOpen.value = false;
-}
+};
 
 const fetchFavorites = async () => {
   try {
@@ -104,7 +105,29 @@ const addToFavorite = async (id) => {
   }
 };
 
-// provide('addToFavorite', addToFavorite);
+const addToCart = (id) => {
+  const item = items.value.find((item) => item.id === id);
+
+  item.isAdded = true;
+  cart.value.push(item);
+};
+
+const deleteFromCart = (id) => {
+  const item = items.value.find((item) => item.id === id);
+
+  item.isAdded = false;
+  cart.value = cart.value.filter((item) => item.id !== id);
+};
+
+const onPlusClick = (id) => {
+  const item = items.value.find((item) => item.id === id);
+
+  if (!item.isAdded) {
+    addToCart(id);
+  } else {
+    deleteFromCart(id);
+  }
+};
 
 onMounted(async () => {
   await fetchItems();
@@ -113,13 +136,14 @@ onMounted(async () => {
 
 watch(filters, fetchItems);
 
-provide('drawerActions', {openDrawer, closeDrawer});
+provide('cart', { open: openDrawer, close: closeDrawer, list: cart, remove: deleteFromCart, onPlusClick });
 </script>
 
 <template>
   <Drawer v-if="isDrawerOpen" />
-
   <div class="shadow-grey-200 m-auto mt-20 w-3/5 rounded-xl bg-white shadow-xl">
+    
+
     <Header @open-drawer="openDrawer" />
 
     <div class="p-10">
@@ -151,7 +175,10 @@ provide('drawerActions', {openDrawer, closeDrawer});
         </div>
       </div>
 
-      <CardList :items="items" @add-to-favorite="addToFavorite" />
+      <CardList
+        :items="items"
+        @add-to-favorite="addToFavorite"
+      />
     </div>
   </div>
 </template>

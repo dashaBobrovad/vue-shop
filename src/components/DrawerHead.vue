@@ -1,8 +1,7 @@
 <script setup>
 import { inject } from 'vue';
 
-const closeDrawer = inject('drawerActions').closeDrawer;
-
+const { close: closeDrawer } = inject('cart');
 </script>
 <template>
   <h2 class="mb-10 flex items-center gap-5 text-2xl font-bold">

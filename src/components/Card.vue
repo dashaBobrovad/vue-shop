@@ -1,4 +1,6 @@
 <script setup>
+import { inject } from 'vue';
+
 defineProps({
   id: Number,
   title: String,
@@ -9,6 +11,8 @@ defineProps({
 });
 
 defineEmits(['addToFavorite']);
+
+const { onPlusClick } = inject('cart');
 </script>
 
 <template>
@@ -28,7 +32,7 @@ defineEmits(['addToFavorite']);
       <img
         :src="!isAdded ? '/plus.svg' : '/checked.svg'"
         alt="Plus"
-        @click="onAddClick"
+        @click="onPlusClick(id)"
       />
     </div>
   </div>

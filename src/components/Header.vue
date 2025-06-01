@@ -1,5 +1,5 @@
 <script setup>
-defineEmits(['openDrawer'])
+defineEmits(['openDrawer']);
 </script>
 
 <template>

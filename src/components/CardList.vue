@@ -12,13 +12,13 @@ defineEmits(['addToFavorite']);
   <div class="grid grid-cols-4 gap-10">
     <Card
       v-for="item of items"
-      :key="item.id"
       :id="item.id"
+      :key="item.id"
       :title="item.title"
       :price="item.price"
       :img="item.imageUrl"
-      :isFavorite="item.isFavorite"
-      :isAdded="item.isAdded"
+      :is-favorite="item.isFavorite"
+      :is-added="item.isAdded"
       @add-to-favorite="$emit('addToFavorite', item.id)"
     />
   </div>
