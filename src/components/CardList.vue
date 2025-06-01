@@ -5,7 +5,7 @@ defineProps({
   items: Array,
 });
 
-defineEmits(['add-to-favorite']);
+defineEmits(['addToFavorite']);
 </script>
 
 <template>
@@ -19,7 +19,7 @@ defineEmits(['add-to-favorite']);
       :img="item.imageUrl"
       :isFavorite="item.isFavorite"
       :isAdded="item.isAdded"
-      @add-to-favorite="$emit('add-to-favorite', item.id)"
+      @add-to-favorite="$emit('addToFavorite', item.id)"
     />
   </div>
 </template>

@@ -2,13 +2,24 @@
 import { onMounted, ref, watch, reactive, provide } from 'vue';
 import CardList from '../components/CardList.vue';
 import Header from '../components/Header.vue';
+import Drawer from '../components/Drawer.vue';
 
 const items = ref([]);
+
+const isDrawerOpen = ref(false);
 
 const filters = reactive({
   searchQuery: '',
   sortBy: '',
 });
+
+const openDrawer = () => {
+  isDrawerOpen.value = true;
+}
+
+const closeDrawer = () => {
+  isDrawerOpen.value = false;
+}
 
 const fetchFavorites = async () => {
   try {
@@ -101,11 +112,15 @@ onMounted(async () => {
 });
 
 watch(filters, fetchItems);
+
+provide('drawerActions', {openDrawer, closeDrawer});
 </script>
 
 <template>
+  <Drawer v-if="isDrawerOpen" />
+
   <div class="shadow-grey-200 m-auto mt-20 w-3/5 rounded-xl bg-white shadow-xl">
-    <Header />
+    <Header @open-drawer="openDrawer" />
 
     <div class="p-10">
       <div class="mb-10 flex items-center justify-between">
