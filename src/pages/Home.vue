@@ -105,27 +105,39 @@ const addToFavorite = async (id) => {
   }
 };
 
-const addToCart = (id) => {
-  const item = items.value.find((item) => item.id === id);
+// const addToCart = (id) => {
+//   const item = items.value.find((item) => item.id === id);
 
-  item.isAdded = true;
-  cart.value.push(item);
-};
+//   item.isAdded = true;
+//   cart.value.push(item);
+// };
 
-const deleteFromCart = (id) => {
-  const item = items.value.find((item) => item.id === id);
+// const deleteFromCart = (id) => {
+//   const item = items.value.find((item) => item.id === id);
 
-  item.isAdded = false;
-  cart.value = cart.value.filter((item) => item.id !== id);
-};
+//   item.isAdded = false;
+//   cart.value = cart.value.filter((item) => item.id !== id);
+// };
+
+// const onPlusClick = (id) => {
+//   const item = items.value.find((item) => item.id === id);
+
+//   if (!item.isAdded) {
+//     addToCart(id);
+//   } else {
+//     deleteFromCart(id);
+//   }
+// };
 
 const onPlusClick = (id) => {
   const item = items.value.find((item) => item.id === id);
+  if (!item) return;
 
-  if (!item.isAdded) {
-    addToCart(id);
+  item.isAdded = !item.isAdded;
+  if (item.isAdded) {
+    cart.value.push(item);
   } else {
-    deleteFromCart(id);
+    cart.value = cart.value.filter((item) => item.id !== id);
   }
 };
 
@@ -136,49 +148,53 @@ onMounted(async () => {
 
 watch(filters, fetchItems);
 
-provide('cart', { open: openDrawer, close: closeDrawer, list: cart, remove: deleteFromCart, onPlusClick });
+provide('cart', {
+  open: openDrawer,
+  close: closeDrawer,
+  list: cart,
+  onPlusClick,
+});
 </script>
 
 <template>
-  <Drawer v-if="isDrawerOpen" />
-  <div class="shadow-grey-200 m-auto mt-20 w-3/5 rounded-xl bg-white shadow-xl">
-    
+  <div>
+    <Drawer v-if="isDrawerOpen" />
+    <div
+      class="shadow-grey-200 m-auto mt-20 w-3/5 rounded-xl bg-white shadow-xl"
+    >
+      <Header @open-drawer="openDrawer" />
 
-    <Header @open-drawer="openDrawer" />
-
-    <div class="p-10">
-      <div class="mb-10 flex items-center justify-between">
-        <h1 class="text-3xl font-bold">Все кроссовки</h1>
-        <div class="flex items-center gap-4">
-          <select
-            v-model="filters.sortBy"
-            class="rounded-md border border-gray-200 px-3 py-2 focus:border-gray-400 focus:outline-none"
-          >
-            <option value="" disabled selected>Select your option</option>
-            <option value="title">По названию</option>
-            <option value="-price">По цене (дешевые)</option>
-            <option value="price">По цене (дорогие)</option>
-          </select>
-          <div class="relative">
-            <input
-              v-model="filters.searchQuery"
-              type="text"
-              class="rounded-md border border-gray-200 py-2 pl-10 pr-4 focus:border-gray-400 focus:outline-none"
-              placeholder="Поиск..."
-            />
-            <div
-              class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3"
+      <div class="p-10">
+        <div class="mb-10 flex items-center justify-between">
+          <h1 class="text-3xl font-bold">Все кроссовки</h1>
+          <div class="flex items-center gap-4">
+            <select
+              v-model="filters.sortBy"
+              class="rounded-md border border-gray-200 px-3 py-2 focus:border-gray-400 focus:outline-none"
             >
-              <img src="/search.svg" />
+              <option value="" disabled selected>Select your option</option>
+              <option value="title">По названию</option>
+              <option value="-price">По цене (дешевые)</option>
+              <option value="price">По цене (дорогие)</option>
+            </select>
+            <div class="relative">
+              <input
+                v-model="filters.searchQuery"
+                type="text"
+                class="rounded-md border border-gray-200 py-2 pl-10 pr-4 focus:border-gray-400 focus:outline-none"
+                placeholder="Поиск..."
+              />
+              <div
+                class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3"
+              >
+                <img src="/search.svg" />
+              </div>
             </div>
           </div>
         </div>
-      </div>
 
-      <CardList
-        :items="items"
-        @add-to-favorite="addToFavorite"
-      />
+        <CardList :items="items" @add-to-favorite="addToFavorite" />
+      </div>
     </div>
   </div>
 </template>

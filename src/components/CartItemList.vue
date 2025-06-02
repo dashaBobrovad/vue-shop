@@ -2,7 +2,7 @@
 import { inject } from 'vue';
 import CartItem from './CartItem.vue';
 
-const { list: cartList, remove } = inject('cart');
+const { list: cartList, onPlusClick } = inject('cart');
 </script>
 
 <template>
@@ -10,12 +10,12 @@ const { list: cartList, remove } = inject('cart');
     <div class="flex flex-col gap-5">
       <CartItem
         v-for="item of cartList"
-        :key="item.id"
         :id="item.id"
+        :key="item.id"
         :title="item.title"
         :price="item.price"
         :img="item.imageUrl"
-        @remove="remove(item.id)"
+        @on-plus-click="onPlusClick(item.id)"
       />
     </div>
 
