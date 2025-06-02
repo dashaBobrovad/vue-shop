@@ -2,7 +2,7 @@
 import { inject } from 'vue';
 import CartItem from './CartItem.vue';
 
-const { list: cartList, onPlusClick } = inject('cart');
+const { list: cartList, toggleCartItem } = inject('cart');
 </script>
 
 <template>
@@ -15,7 +15,7 @@ const { list: cartList, onPlusClick } = inject('cart');
         :title="item.title"
         :price="item.price"
         :img="item.imageUrl"
-        @on-plus-click="onPlusClick(item.id)"
+        @toggle-cart-item="toggleCartItem(item.id)"
       />
     </div>
 

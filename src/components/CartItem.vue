@@ -3,10 +3,9 @@ defineProps({
   img: String,
   title: String,
   price: Number,
-  onClickDelete: Function,
 });
 
-defineEmits(['onPlusClick']);
+defineEmits(['toggleCartItem ']);
 </script>
 
 <template>
@@ -22,7 +21,7 @@ defineEmits(['onPlusClick']);
           class="cursor-pointer opacity-30 transition hover:opacity-100"
           src="/close.svg"
           alt="Close"
-          @click="$emit('onPlusClick')"
+          @click="$emit('toggleCartItem')"
         />
       </div>
     </div>

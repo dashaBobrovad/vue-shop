@@ -12,7 +12,7 @@ defineProps({
 
 defineEmits(['addToFavorite']);
 
-const { onPlusClick } = inject('cart');
+const { toggleCartItem } = inject('cart');
 </script>
 
 <template>
@@ -32,7 +32,7 @@ const { onPlusClick } = inject('cart');
       <img
         :src="!isAdded ? '/plus.svg' : '/checked.svg'"
         alt="Plus"
-        @click="onPlusClick(id)"
+        @click="toggleCartItem (id)"
       />
     </div>
   </div>

@@ -105,31 +105,7 @@ const addToFavorite = async (id) => {
   }
 };
 
-// const addToCart = (id) => {
-//   const item = items.value.find((item) => item.id === id);
-
-//   item.isAdded = true;
-//   cart.value.push(item);
-// };
-
-// const deleteFromCart = (id) => {
-//   const item = items.value.find((item) => item.id === id);
-
-//   item.isAdded = false;
-//   cart.value = cart.value.filter((item) => item.id !== id);
-// };
-
-// const onPlusClick = (id) => {
-//   const item = items.value.find((item) => item.id === id);
-
-//   if (!item.isAdded) {
-//     addToCart(id);
-//   } else {
-//     deleteFromCart(id);
-//   }
-// };
-
-const onPlusClick = (id) => {
+const toggleCartItem = (id) => {
   const item = items.value.find((item) => item.id === id);
   if (!item) return;
 
@@ -152,7 +128,7 @@ provide('cart', {
   open: openDrawer,
   close: closeDrawer,
   list: cart,
-  onPlusClick,
+  toggleCartItem,
 });
 </script>
 
