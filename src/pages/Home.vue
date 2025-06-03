@@ -69,9 +69,10 @@ const addToFavorite = async (id) => {
 
     const item = items.value.find((item) => item.id === id);
 
-    item.isFavorite = !item.isFavorite;
     if (!item.isFavorite) {
       const obj = { itemId: id };
+
+      item.isFavorite = true;
 
       const response = await fetch(url, {
         method: 'POST',
@@ -82,6 +83,8 @@ const addToFavorite = async (id) => {
       const data = await response.json();
       item.favoriteId = data.id;
     } else {
+      item.isFavorite = false;
+
       await fetch(`${url}${item.favoriteId}/`, {
         method: 'DELETE',
       });
