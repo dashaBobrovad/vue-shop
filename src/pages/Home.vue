@@ -1,8 +1,8 @@
 <script setup>
 import { onMounted, ref, watch, reactive, provide, computed } from 'vue';
 import CardList from '../components/CardList.vue';
-import Header from '../components/Header.vue';
 import Drawer from '../components/Drawer.vue';
+import Header from '../components/Header.vue';
 
 const items = ref([]);
 const cart = ref([]);
@@ -86,36 +86,6 @@ const fetchItems = async () => {
   }
 };
 
-const addToFavorite = async (id) => {
-  try {
-    const url = 'https://efe88dd61a59f406.mokky.dev/favorite/';
-
-    const item = items.value.find((item) => item.id === id);
-
-    item.isFavorite = !item.isFavorite;
-    if (!item.isFavorite) {
-      const obj = { itemId: id };
-
-      const response = await fetch(url, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(obj),
-      });
-
-      const data = await response.json();
-      item.favoriteId = data.id;
-    } else {
-      await fetch(`${url}${item.favoriteId}/`, {
-        method: 'DELETE',
-      });
-
-      item.favoriteId = undefined;
-    }
-  } catch (error) {
-    console.error(error);
-  }
-};
-
 const toggleCartItem = (id) => {
   const item = items.value.find((item) => item.id === id);
   if (!item) return;
@@ -158,6 +128,36 @@ const addToOrders = async () => {
     isCreatingOrder.value = false;
   } catch (error) {
     console.log(error);
+  }
+};
+
+const addToFavorite = async (id) => {
+  try {
+    const url = 'https://efe88dd61a59f406.mokky.dev/favorite/';
+
+    const item = items.value.find((item) => item.id === id);
+
+    item.isFavorite = !item.isFavorite;
+    if (!item.isFavorite) {
+      const obj = { itemId: id };
+
+      const response = await fetch(url, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(obj),
+      });
+
+      const data = await response.json();
+      item.favoriteId = data.id;
+    } else {
+      await fetch(`${url}${item.favoriteId}/`, {
+        method: 'DELETE',
+      });
+
+      item.favoriteId = undefined;
+    }
+  } catch (error) {
+    console.error(error);
   }
 };
 
@@ -206,7 +206,6 @@ provide('cart', {
       class="shadow-grey-200 m-auto mt-20 w-3/5 rounded-xl bg-white shadow-xl"
     >
       <Header :cart-sum="cartSum" @open-drawer="openDrawer" />
-
       <div class="p-10">
         <div class="mb-10 flex items-center justify-between">
           <h1 class="text-3xl font-bold">Все кроссовки</h1>

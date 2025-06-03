@@ -1,4 +1,6 @@
 <script setup>
+import { RouterLink } from 'vue-router';
+
 defineProps({
   cartSum: Number,
 });
@@ -27,8 +29,10 @@ defineEmits(['openDrawer']);
       <li
         class="flex cursor-pointer items-center gap-3 text-gray-500 hover:text-black"
       >
-        <img src="/heart.svg" alt="Favorite" />
-        <span>Закладки</span>
+        <RouterLink to="/fav">
+          <img src="/heart.svg" alt="Favorite" />
+          <span>Закладки</span>
+        </RouterLink>
       </li>
       <li
         class="flex cursor-pointer items-center gap-3 text-gray-500 hover:text-black"

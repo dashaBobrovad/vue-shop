@@ -9,7 +9,7 @@ defineEmits(['toggleCartItem ']);
 </script>
 
 <template>
-  <div 
+  <div
     class="relative flex w-full gap-4 rounded-xl border border-slate-100 p-4"
   >
     <img :src="img" class="size-16" alt="Sneaker" />
