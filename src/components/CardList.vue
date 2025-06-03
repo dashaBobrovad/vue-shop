@@ -1,4 +1,5 @@
 <script setup>
+import { inject } from 'vue';
 import Card from '../components/Card.vue';
 
 defineProps({
@@ -6,6 +7,8 @@ defineProps({
 });
 
 defineEmits(['addToFavorite']);
+
+const { toggleCartItem } = inject('cart');
 </script>
 
 <template>
@@ -20,6 +23,7 @@ defineEmits(['addToFavorite']);
       :is-favorite="item.isFavorite"
       :is-added="item.isAdded"
       @add-to-favorite="$emit('addToFavorite', item.id)"
+      @toggle-cart-item="toggleCartItem(item)"
     />
   </div>
 </template>

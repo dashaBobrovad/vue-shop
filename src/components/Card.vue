@@ -10,9 +10,7 @@ defineProps({
   isAdded: Boolean,
 });
 
-defineEmits(['addToFavorite']);
-
-const { toggleCartItem } = inject('cart');
+defineEmits(['addToFavorite', 'toggleCartItem']);
 </script>
 
 <template>
@@ -32,7 +30,7 @@ const { toggleCartItem } = inject('cart');
       <img
         :src="!isAdded ? '/plus.svg' : '/checked.svg'"
         alt="Plus"
-        @click="toggleCartItem(id)"
+        @click="$emit('toggleCartItem')"
       />
     </div>
   </div>

@@ -15,7 +15,7 @@ const { list: cartList, toggleCartItem } = inject('cart');
         :title="item.title"
         :price="item.price"
         :img="item.imageUrl"
-        @toggle-cart-item="toggleCartItem(item.id)"
+        @toggle-cart-item="toggleCartItem(item)"
       />
     </div>
   </div>

@@ -5,7 +5,7 @@ defineProps({
   price: Number,
 });
 
-defineEmits(['toggleCartItem ']);
+defineEmits(['toggleCartItem']);
 </script>
 
 <template>
