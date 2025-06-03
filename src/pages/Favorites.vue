@@ -1,1 +1,1 @@
-<template></template>
+<template><div>fav</div></template>
