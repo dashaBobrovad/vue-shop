@@ -9,7 +9,7 @@ defineEmits(['addToFavorite']);
 </script>
 
 <template>
-  <div class="grid grid-cols-4 gap-10">
+  <div v-auto-animate class="grid grid-cols-4 gap-10">
     <Card
       v-for="item of items"
       :id="item.id"

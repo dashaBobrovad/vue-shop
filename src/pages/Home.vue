@@ -1,5 +1,5 @@
 <script setup>
-import { onMounted, ref, watch, reactive, provide } from 'vue';
+import { onMounted, ref, watch, reactive, provide, computed } from 'vue';
 import CardList from '../components/CardList.vue';
 import Header from '../components/Header.vue';
 import Drawer from '../components/Drawer.vue';
@@ -8,6 +8,16 @@ const items = ref([]);
 const cart = ref([]);
 
 const isDrawerOpen = ref(false);
+
+const orderId = ref(null);
+
+const isCreatingOrder = ref(false);
+
+const cartSum = computed(() =>
+  cart.value.length > 0
+    ? cart.value.reduce((acc, item) => acc + item.price, 0)
+    : 0,
+);
 
 const filters = reactive({
   searchQuery: '',
@@ -20,6 +30,7 @@ const openDrawer = () => {
 
 const closeDrawer = () => {
   isDrawerOpen.value = false;
+  orderId.value = null;
 };
 
 const fetchFavorites = async () => {
@@ -117,28 +128,84 @@ const toggleCartItem = (id) => {
   }
 };
 
+const addToOrders = async () => {
+  try {
+    cart.value = [];
+    isCreatingOrder.value = true;
+
+    const url = 'https://efe88dd61a59f406.mokky.dev/orders/';
+
+    const body = {
+      items: cart.value,
+      totalPrice: cartSum.value,
+    };
+
+    const obj = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(body),
+    };
+
+    const response = await fetch(url, obj);
+
+    const data = await response.json();
+    orderId.value = data.id;
+
+    items.value = items.value.map((item) => {
+      return { ...item, isAdded: false };
+    });
+
+    isCreatingOrder.value = false;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 onMounted(async () => {
+  cart.value = JSON.parse(localStorage.getItem('cart')) || [];
+
   await fetchItems();
   await fetchFavorites();
+
+  items.value = items.value.map((item) => {
+    return {
+      ...item,
+      isAdded: !cart.value.findIndex((cartItem) => cartItem.id === item.id),
+    };
+  });
 });
 
 watch(filters, fetchItems);
+
+watch(
+  cart,
+  (val) => {
+    localStorage.setItem('cart', JSON.stringify(val));
+  },
+  { deep: true },
+);
 
 provide('cart', {
   open: openDrawer,
   close: closeDrawer,
   list: cart,
   toggleCartItem,
+  addToOrders,
 });
 </script>
 
 <template>
   <div>
-    <Drawer v-if="isDrawerOpen" />
+    <Drawer
+      v-if="isDrawerOpen"
+      :cart-sum="cartSum"
+      :is-creating-order="isCreatingOrder"
+      :order-id="orderId"
+    />
     <div
       class="shadow-grey-200 m-auto mt-20 w-3/5 rounded-xl bg-white shadow-xl"
     >
-      <Header @open-drawer="openDrawer" />
+      <Header :cart-sum="cartSum" @open-drawer="openDrawer" />
 
       <div class="p-10">
         <div class="mb-10 flex items-center justify-between">

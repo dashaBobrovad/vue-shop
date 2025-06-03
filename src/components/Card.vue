@@ -32,7 +32,7 @@ const { toggleCartItem } = inject('cart');
       <img
         :src="!isAdded ? '/plus.svg' : '/checked.svg'"
         alt="Plus"
-        @click="toggleCartItem (id)"
+        @click="toggleCartItem(id)"
       />
     </div>
   </div>

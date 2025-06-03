@@ -1,4 +1,8 @@
 <script setup>
+defineProps({
+  cartSum: Number,
+});
+
 defineEmits(['openDrawer']);
 </script>
 
@@ -18,7 +22,7 @@ defineEmits(['openDrawer']);
         @click="$emit('openDrawer')"
       >
         <img src="/cart.svg" alt="Cart" />
-        <b>1205 руб.</b>
+        <b>{{ cartSum }} руб.</b>
       </li>
       <li
         class="flex cursor-pointer items-center gap-3 text-gray-500 hover:text-black"
