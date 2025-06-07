@@ -5,7 +5,7 @@ import { ref, provide, computed } from 'vue';
 import Drawer from './components/Drawer.vue';
 import Header from './components/Header.vue';
 
-/* Корзина (START) */
+/* Cart (START) */
 const cart = ref([]);
 
 const isDrawerOpen = ref(false);
@@ -75,7 +75,7 @@ provide('cart', {
   addToOrders,
   toggleCartItem,
 });
-/* Корзина (END) */
+/* Cart (END) */
 </script>
 
 <template>
