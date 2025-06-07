@@ -12,8 +12,6 @@ const isDrawerOpen = ref(false);
 
 const orderId = ref(null);
 
-const isCreatingOrder = ref(false);
-
 const cartSum = computed(() =>
   cart.value.length > 0
     ? cart.value.reduce((acc, item) => acc + item.price, 0)
@@ -27,35 +25,6 @@ const openDrawer = () => {
 const closeDrawer = () => {
   isDrawerOpen.value = false;
   orderId.value = null;
-};
-
-const addToOrders = async () => {
-  try {
-    cart.value = [];
-    isCreatingOrder.value = true;
-
-    const url = 'https://efe88dd61a59f406.mokky.dev/orders/';
-
-    const body = {
-      items: cart.value,
-      totalPrice: cartSum.value,
-    };
-
-    const obj = {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(body),
-    };
-
-    const response = await fetch(url, obj);
-
-    const data = await response.json();
-    orderId.value = data.id;
-
-    isCreatingOrder.value = false;
-  } catch (error) {
-    console.log(error);
-  }
 };
 
 const toggleCartItem = (item) => {
@@ -72,7 +41,6 @@ provide('cart', {
   open: openDrawer,
   close: closeDrawer,
   list: cart,
-  addToOrders,
   toggleCartItem,
 });
 /* Cart (END) */
@@ -82,7 +50,6 @@ provide('cart', {
   <Drawer
     v-if="isDrawerOpen"
     :cart-sum="cartSum"
-    :is-creating-order="isCreatingOrder"
     :order-id="orderId"
   />
   <div class="shadow-grey-200 m-auto mt-20 w-3/5 rounded-xl bg-white shadow-xl">

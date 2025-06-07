@@ -1,5 +1,5 @@
 <script setup>
-import { computed, inject } from 'vue';
+import { computed, inject, ref } from 'vue';
 import CartItemList from './CartItemList.vue';
 import DrawerHead from './DrawerHead.vue';
 import InfoBlock from './InfoBlock.vue';
@@ -10,7 +10,38 @@ const props = defineProps({
   isCreatingOrder: Boolean,
 });
 
-const { addToOrders } = inject('cart');
+const { list: cartList } = inject('cart');
+
+const isCreatingOrder = ref(false);
+
+const addToOrders = async () => {
+  try {
+    cartList.value = [];
+    isCreatingOrder.value = true;
+
+    const url = 'https://efe88dd61a59f406.mokky.dev/orders/';
+
+    const body = {
+      items: cartList.value,
+      totalPrice: cartSum.value,
+    };
+
+    const obj = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(body),
+    };
+
+    const response = await fetch(url, obj);
+
+    const data = await response.json();
+    orderId.value = data.id;
+
+    isCreatingOrder.value = false;
+  } catch (error) {
+    console.log(error);
+  }
+};
 
 const tax = computed(() => Math.round((props.cartSum * 5) / 100));
 </script>
