@@ -47,7 +47,7 @@ const fetchFavorites = async () => {
 
     items.value = items.value.map((item) => {
       const favorite = favoritesData.find(
-        (favItem) => favItem.itemId === item.id,
+        (favItem) => favItem.item_id === item.id,
       );
 
       if (!favorite) return item;
@@ -70,7 +70,7 @@ const addToFavorite = async (id) => {
     const item = items.value.find((item) => item.id === id);
 
     if (!item.isFavorite) {
-      const obj = { itemId: id };
+      const obj = { item_id: id };
 
       item.isFavorite = true;
 

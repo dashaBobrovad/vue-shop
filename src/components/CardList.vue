@@ -4,6 +4,7 @@ import Card from '../components/Card.vue';
 
 defineProps({
   items: Array,
+  isDisableActions: Boolean,
 });
 
 defineEmits(['addToFavorite']);
@@ -22,6 +23,7 @@ const { toggleCartItem } = inject('cart');
       :img="item.imageUrl"
       :is-favorite="item.isFavorite"
       :is-added="item.isAdded"
+      :is-disable-actions="isDisableActions"
       @add-to-favorite="$emit('addToFavorite', item.id)"
       @toggle-cart-item="toggleCartItem(item)"
     />

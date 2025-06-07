@@ -8,6 +8,7 @@ defineProps({
   price: Number,
   isFavorite: Boolean,
   isAdded: Boolean,
+  isDisableActions: Boolean,
 });
 
 defineEmits(['addToFavorite', 'toggleCartItem']);
@@ -17,7 +18,11 @@ defineEmits(['addToFavorite', 'toggleCartItem']);
   <div
     class="relative flex w-full cursor-pointer flex-col rounded-xl border border-slate-100 p-8 transition hover:-translate-y-2 hover:shadow-xl"
   >
-    <div class="absolute left-8 top-8" @click="$emit('addToFavorite')">
+    <div
+      v-if="!isDisableActions"
+      class="absolute left-8 top-8"
+      @click="$emit('addToFavorite')"
+    >
       <img :src="!isFavorite ? '/like-1.svg' : '/like-2.svg'" alt="Favorite" />
     </div>
     <img :src="img" class="w-full" alt="Sneaker" />
@@ -28,6 +33,7 @@ defineEmits(['addToFavorite', 'toggleCartItem']);
         <span class="font-bold">{{ price }} руб.</span>
       </div>
       <img
+        v-if="!isDisableActions"
         :src="!isAdded ? '/plus.svg' : '/checked.svg'"
         alt="Plus"
         @click="$emit('toggleCartItem')"
